@@ -1,168 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shipping Cost Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav class="navbar navbar-light bg-light static-top">
-     </nav>
-    <section>
-        <div class="container-fluid">
-            <div class="container">
-                <form action="/predict" method="post">
-                    <legend>Shipping Cost Prediction</legend>
-                 
-                      <div class="mb-3">
-                        <label for="artist">artist reputation</label>
-                        <input type="number" class="form-control" id="artist" name="artist" placeholder="Int" required="required">
-                      </div>
-        
-                      <div class="mb-3">
-                        <label for="height">height</label>
-                        <input type="number" class="form-control" id="height" name="height" placeholder="Int" required="required">
-                      </div>
+    <title>Shipment Price Predictor - AI Dashboard</title>
+    <!-- Premium Fonts and CSS Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
 
-                      <div class="mb-3">
-                        <label for="width">width</label>
-                        <input type="number" class="form-control" id="width" name="width" placeholder="Int" required="required">
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="weight">weight</label>
-                        <input type="number" class="form-control" id="weight" name="weight" placeholder="Int" required="required">
-                      </div>
-
-
-        
-                      <div class="mb-3">
-                        <label for="material">Select material</label>
-                        <select class="form-control" id="material" name="material" placeholder="material" required="required">
-                          <option value="" disabled selected>material</option>
-                          <option>Aluminium</option>
-                          <option>Marble</option>
-                          <option>Bronze</option>
-                          <option>Clay</option>
-                          <option>Brass</option>
-                          <option>Wood</option>
-                          <option>Stone</option>
-                        </select>
-                      </div>
-
-
-                      <div class="mb-3">
-                        <label for="priceOfSculpture">priceOfSculpture</label>
-                        <input type="number" class="form-control" id="priceOfSculpture" name="priceOfSculpture" placeholder="Int" required="required">
-                      </div>
-
-
-                      <div class="mb-3">
-                        <label for="baseShippingPrice">baseShippingPrice</label>
-                        <input type="number" class="form-control" id="baseShippingPrice" name="baseShippingPrice" placeholder="Int" required="required">
-                      </div>
-
-
-                      <div class="mb-3">
-                        <label for="international">international</label>
-                        <select class="form-control" id="international" name="international" placeholder="international" required="required">
-                          <option value="" disabled selected>international</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                      </div>
-
-
-                      <div class="mb-3">
-                        <label for="expressShipment">expressShipment</label>
-                        <select class="form-control" id="expressShipment" name="expressShipment" placeholder="expressShipment" required="required">
-                          <option value="" disabled selected>expressShipment</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                      </div>
-
-
-
-                      <div class="mb-3">
-                        <label for="installationIncluded">installationIncluded</label>
-                        <select class="form-control" id="installationIncluded" name="installationIncluded" placeholder="installationIncluded" required="required">
-                          <option value="" disabled selected>installationIncluded</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                      </div>
-
-           
-
-
-                      <div class="mb-3">
-                        <label for="transport">transport</label>
-                        <select class="form-control" id="transport" name="transport" placeholder="transport" required="required">
-                          <option value="" disabled selected>transport</option>
-                          <option>Airways</option>
-                          <option>Roadways</option>
-                          <option>Waterways</option>
-                        </select>
-                      </div>
-
-
-
-                      <div class="mb-3">
-                        <label for="fragile">fragile</label>
-                        <select class="form-control" id="fragile" name="fragile" placeholder="fragile" required="required">
-                          <option value="" disabled selected>fragile</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                      </div>
-
-
-
-
-                      <div class="mb-3">
-                        <label for="customerInformation">customerInformation</label>
-                        <select class="form-control" id="customerInformation" name="customerInformation" placeholder="customerInformation" required="required">
-                          <option value="" disabled selected>customerInformation</option>
-                          <option>Wealthy</option>
-                          <option>Working Class</option>
-                        </select>
-                      </div>
-
-
-                      <div class="mb-3">
-                        <label for="remoteLocation">remoteLocation</label>
-                        <select class="form-control" id="remoteLocation" name="remoteLocation" placeholder="remoteLocation" required="required">
-                          <option value="" disabled selected>remoteLocation</option>
-                          <option>Yes</option>
-                          <option>No</option>
-                        </select>
-                      </div>
-
-
-
-                      
-                        <input class="btn btn-primary" type="submit" value="Predict" required />
-                    </div>
-        
-                </form>
-            </div>
-            <div class="text-center text-black">
-                <h2 class="display-4 fw-bolder">The shipment cost is  {{context}} </h2>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">🚀</div>
+                <span>Shipment AI</span>
+            </a>
+            <div class="nav-actions">
+                <button type="button" class="btn-train" onclick="trainModel()">Train Model</button>
             </div>
         </div>
-    </section>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script type="text/javascript">
-        $(".input").focus(function(){
-            $(this).parent().addClass("focus");
-        }).blur(function(){
-            if($(this).val() === ''){
-                $(this).parent().removeClass("focus");
+    </header>
+
+    <!-- Main Workspace -->
+    <main>
+        <!-- Left Column: Prediction Form -->
+        <div class="form-card">
+            <h2 class="form-title">Shipping Cost Predictor</h2>
+            <form action="/predict" method="post" id="predictorForm">
+                <div class="form-grid">
+                    
+                    <!-- Section: Item Specifications -->
+                    <div class="form-section-title">Item Details</div>
+                    
+                    <div class="form-group">
+                        <label for="artist">Artist Reputation (0.0 - 1.0)</label>
+                        <input type="number" step="0.01" min="0" max="1" class="form-control" id="artist" name="artist" placeholder="e.g. 0.85" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priceOfSculpture">Sculpture Price ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="priceOfSculpture" name="priceOfSculpture" placeholder="e.g. 1500" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="material">Material Type</label>
+                        <select class="form-control" id="material" name="material" required="required">
+                            <option value="" disabled selected>Select Material</option>
+                            <option value="Aluminium">Aluminium</option>
+                            <option value="Marble">Marble</option>
+                            <option value="Bronze">Bronze</option>
+                            <option value="Clay">Clay</option>
+                            <option value="Brass">Brass</option>
+                            <option value="Wood">Wood</option>
+                            <option value="Stone">Stone</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fragile">Is Item Fragile?</label>
+                        <select class="form-control" id="fragile" name="fragile" required="required">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <!-- Section: Dimensions -->
+                    <div class="form-section-title">Physical Dimensions</div>
+
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" step="0.1" class="form-control" id="weight" name="weight" placeholder="e.g. 45.2" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height">Height (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="height" name="height" placeholder="e.g. 120" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="width">Width (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="width" name="width" placeholder="e.g. 60" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="installationIncluded">Installation Included?</label>
+                        <select class="form-control" id="installationIncluded" name="installationIncluded" required="required">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <!-- Section: Logistics & Transport -->
+                    <div class="form-section-title">Logistics & Shipping</div>
+
+                    <div class="form-group">
+                        <label for="baseShippingPrice">Base Shipping Price ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="baseShippingPrice" name="baseShippingPrice" placeholder="e.g. 250" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport">Transport Mode</label>
+                        <select class="form-control" id="transport" name="transport" required="required">
+                            <option value="" disabled selected>Select Mode</option>
+                            <option value="Airways">Airways</option>
+                            <option value="Roadways">Roadways</option>
+                            <option value="Waterways">Waterways</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="international">International Shipping?</label>
+                        <select class="form-control" id="international" name="international" required="required">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expressShipment">Express Shipment?</label>
+                        <select class="form-control" id="expressShipment" name="expressShipment" required="required">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remoteLocation">Remote Location Destination?</label>
+                        <select class="form-control" id="remoteLocation" name="remoteLocation" required="required">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerInformation">Customer Classification</label>
+                        <select class="form-control" id="customerInformation" name="customerInformation" required="required">
+                            <option value="" disabled selected>Select Class</option>
+                            <option value="Wealthy">Wealthy</option>
+                            <option value="Working Class">Working Class</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button class="btn-predict" type="submit">
+                        <span>Calculate Predicted Cost</span> ✨
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Column: Results & Info -->
+        <div class="side-panel">
+            
+            <!-- Result Display -->
+            {% if context != "Rendering" and context is not none %}
+            <div class="result-card" id="resultCard">
+                <span class="result-badge">Calculated Price</span>
+                <div class="result-title">Estimated Shipping Cost</div>
+                <div class="result-value">${{ context }}</div>
+                <p class="result-info">Predicted using our advanced Gradient Boosting regression model trained on active shipping lanes and historic weight-rate metrics.</p>
+            </div>
+            {% else %}
+            <div class="result-card" style="border-top-color: var(--border-color);">
+                <span class="result-badge" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: var(--text-secondary);">Idle</span>
+                <div class="result-title" style="margin-bottom: 0;">Ready to Estimate</div>
+                <p class="result-info" style="margin-top: 1rem;">Fill out the details on the left and click <strong>Calculate Predicted Cost</strong> to view ML predictions instantly.</p>
+            </div>
+            {% endif %}
+
+            <!-- About/Information Panel -->
+            <div class="info-card">
+                <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Model Insights</h3>
+                
+                <div class="info-item">
+                    <div class="info-icon">1</div>
+                    <div class="info-text">
+                        <h4>Real-Time Ingestion</h4>
+                        <p>Prices are computed relative to historical database schemas ingestion dynamically.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">2</div>
+                    <div class="info-text">
+                        <h4>Dimensional Calculation</h4>
+                        <p>Dimensional factors (height, width, and weight) are normalized using automated preprocessor objects.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">3</div>
+                    <div class="info-text">
+                        <h4>Remote Location Logic</h4>
+                        <p>Additional surcharge variables are evaluated automatically based on standard distance parameters.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Loading Overlay for Training -->
+    <div class="modal-overlay" id="loadingModal">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <h3 style="color: var(--text-primary);">Training ML Model...</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">The system is retraining the pipeline, checking drift validator matrices, and saving model artifacts. Please wait...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Interactive training trigger AJAX script
+        async function trainModel() {
+            const modal = document.getElementById('loadingModal');
+            modal.style.display = 'flex';
+            
+            try {
+                const response = await fetch('/train');
+                const text = await response.text();
+                
+                modal.style.display = 'none';
+                
+                if (response.ok && text.includes('successful')) {
+                    showToast('Model training completed successfully! ✨', 'success');
+                } else {
+                    showToast('Error during training: ' + text, 'error');
+                }
+            } catch (error) {
+                modal.style.display = 'none';
+                showToast('Failed to connect to the training server.', 'error');
+                console.error(error);
             }
-        })
+        }
+
+        // Toast notifications helper
+        function showToast(message, type) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span>${type === 'success' ? '✅' : '❌'}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
+        }
+
+        // Fill previous values back into inputs if available (useful fallback/enhancement)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Restore form values from localStorage if possible (nice micro-interaction)
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                const val = localStorage.getItem(input.id);
+                if (val && !input.value) {
+                    input.value = val;
+                }
+                input.addEventListener('change', () => {
+                    localStorage.setItem(input.id, input.value);
+                });
+            });
+        });
     </script>
-  </body>
+</body>
 </html>

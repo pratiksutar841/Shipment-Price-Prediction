@@ -121,8 +121,34 @@ class CostPredictor:
         logging.info("Entered predict method of the class")
         try:
             # Loading the best model from s3 bucket
-            best_model = self.s3.load_model(MODEL_FILE_NAME, self.bucket_name)
-            logging.info("Loaded best model from s3 bucket")
+            try:
+                best_model = self.s3.load_model(MODEL_FILE_NAME, self.bucket_name)
+                logging.info("Loaded best model from s3 bucket")
+            except Exception as s3_err:
+                logging.warning(f"Failed to load model from S3 ({s3_err}). Trying to load local model...")
+                import os
+                import pickle
+                from from_root.root import from_root
+                local_model_path = None
+                
+                # Search for shipping_price_model.pkl locally in artifacts
+                artifacts_base = os.path.join(from_root(), "artifacts")
+                if os.path.exists(artifacts_base):
+                    latest_time = 0
+                    for root_dir, _, files in os.walk(artifacts_base):
+                        if MODEL_FILE_NAME in files:
+                            full_path = os.path.join(root_dir, MODEL_FILE_NAME)
+                            mtime = os.path.getmtime(full_path)
+                            if mtime > latest_time:
+                                latest_time = mtime
+                                local_model_path = full_path
+                
+                if local_model_path and os.path.exists(local_model_path):
+                    logging.info(f"Loading local model from: {local_model_path}")
+                    with open(local_model_path, "rb") as f:
+                        best_model = pickle.load(f)
+                else:
+                    raise Exception(f"No local model found and S3 load failed: {s3_err}")
 
             # Predicting with best model
             result = best_model.predict(X)

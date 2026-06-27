@@ -2,6 +2,8 @@ import os
 from os import environ
 from datetime import datetime
 from from_root.root import from_root
+from dotenv import load_dotenv
+load_dotenv()
 
 TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 
